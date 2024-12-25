@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shruti Garg - About Me</title>
+  <meta name="description"
+    content="Shruti's personal corner of the internet">
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="./dist/assets/favicon.ico" />
+  <link rel="stylesheet" href="dist/output.css" />
+  <!-- <link rel="stylesheet" href="styles.css" /> -->
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <!-- Start - Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nothing+You+Could+Do&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Signika:wght@400;700&display=swap" rel="stylesheet">
+  <!-- End - Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      content: ["./*.{html,js}"],
+      theme: {
+        extend:
+                {
+                  fontFamily: {
+                    'nothingyoucoulddo': ['Nothing You Could Do', 'cursive'],
+                    'signika': ['Signika', 'sans-serif'],
+                  },
+                  width: {
+        '7/10': '70%',  // Custom width of 70%
+      },
+
+                },
+      },
+      plugins: [],
+    }
+  </script>
+
+</head>
+
+<body
+  class="dark:bg-black bg-white h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500">
+  <!-- Navbar -->
+  <header class="flex w-full overflow-hidden pt-10 pb-1">
+    <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
+      <div class="container mx-auto flex flex-wrap items-center md:flex-no-wrap">
+        <div class="mr-4 md:mr-8">
+          <a href="./index.html" class="text-2xl font-signika font-bold">...</a>
+        </div>
+        <div class="ml-auto md:hidden flex items-center justify-start">
+          <button onclick="menuToggle()" @click="open = !open"
+            class="tap-highlight-transparent text-black dark:text-white w-5 h-5 relative focus:outline-none"
+            @click="open = !open">
+            <span class="sr-only">Open main menu</span>
+            <div class="block w-5 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <span aria-hidden="true"
+                class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out"
+                :class="{'rotate-45': open,' -translate-y-1.5': !open }"></span>
+              <span aria-hidden="true"
+                class="block absolute  h-0.5 w-5 bg-current   transform transition duration-500 ease-in-out"
+                :class="{'opacity-0': open } "></span>
+              <span aria-hidden="true"
+                class="block absolute  h-0.5 w-5 bg-current transform  transition duration-500 ease-in-out"
+                :class="{'-rotate-45': open, ' translate-y-1.5': !open}"></span>
+            </div>
+          </button>
+        </div>
+        <div id="menu"
+          class="w-full h-0 transition-all ease-out duration-500 md:transition-none md:w-auto md:flex-grow md:flex md:items-center">
+          <ul id="ulMenu"
+            class="flex flex-col duration-300 ease-out md:space-x-5 sm:transition-none mt-5 md:flex-row md:items-center md:ml-auto md:mt-0 md:pt-0 md:border-0">
+            <li class="group transition duration-300">
+              <a href="index.html" class="font-signika text-2xl tap-highlight-transparent">ABOUT ME
+                <span
+                class="hidden md:block h-0.5 bg-black dark:bg-white"></span>
+              </a>
+            </li>
+            <!-- <li class="group transition duration-300">
+              <a href="dist/research.html" class="font-signika text-2xl tap-highlight-transparent">RESEARCH
+                <span
+                  class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white"></span>
+              </a>
+            </li> -->
+            <li class="group transition duration-300">
+              <a href="dist/fotos.html" class="font-signika text-2xl tap-highlight-transparent">PHOTOGRAPHY
+                <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white"></span>
+              </a>
+            </li>
+            <li class="group transition duration-300">
+              <a href="dist/projects.html" class="font-signika text-2xl tap-highlight-transparent">PROJECTS
+                <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white"></span>
+              </a>
+            </li>
+            <li class="group transition duration-300">
+              <a href="./dist/assets/Shruti_Garg_CV.pdf" class="font-signika text-2xl tap-highlight-transparent">RESUME/CV
+                <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white"></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <!-- Content -->
+  <div class="container mx-auto w-full lg:w-[70%]">
+    <!-- <h1 class="text-4xl pt-10 pb-8"><b>ABOUT ME</b></h1> -->
+    <div class="grid grid-cols-2 gap-14 md:gap-20">
+      <div class="col-span-2 md:col-span-1">
+        <div
+          class="bg-white dark:bg-neutral-900 p-5 pb-28 m-6 md:m-12 shadow-lg border border-gray-100 dark:border-neutral-800 hover:rotate-0 transition duration-500 -rotate-6 relative scale-90">
+          <img src="./dist/assets/Avatar.jpeg" alt=""
+            class="smooth-edges flex flex-col w-full aspect-square object-cover h-auto" />
+          <div class="absolute bottom-0 left-0 right-0 text-center">
+            <p class="text-gray-800 dark:text-slate-200 pb-7 h-full text-6xl font-nothingyoucoulddo">Shruti Garg</p>
+          </div>
+        </div>
+
+      </div>
+      <section class="font-normal text-center text-base md:text-start mx-3 col-span-2 md:col-span-1 my-auto">
+        <div class="block md:hidden">
+          <p class="text-3xl font-serif font-bold mb-1">Hello there,</p>
+          <p class="text-3xl font-serif font-bold mb-6">I'm Shruti <span class="animate-wave">👋</span></p>
+        </div>
+        <p class="hidden md:block text-3xl font-serif font-bold mb-6">Welcome to my corner of the Internet!
+          <span class="animate-wave">👋</span>
+        </p>
+        <p class="mb-4 leading-relaxed">
+          I'm a M.Eng student at MIT CSAIL, studying robotic manipulation and motion planning
+          with the <a href="https://locomotion.csail.mit.edu/index.html">Robot Locomotion Group</a>,
+          advised by Russ Tedrake. I love all things robotics, and recently I have found my
+          research focusing on motion planning and control.
+          Previously, I have also interned at NVIDIA and Anduril. 
+        </p>
+        <p class="mb-4 leading-relaxed">
+          When I'm taking a break from my robots, I enjoy capturing motion in photographs,
+          exploring new places, and eating good food. I hope to have an ongoing collection
+          of my photographs up soon! 
+        </p>
+      </section>
+    </div>
+  </div>
+  <div class="container mx-auto w-full lg:w-[70%]">
+    <h1 class="text-4xl pt-10 pb-8"><b>Research</b></h1>
+    <div class="mt-10 mx-3 bg-white dark:bg-neutral-900 p-6 rounded-lg shadow-xl flex flex-col sm:flex-row items-center">
+      <!-- Image Section -->
+      <div class="w-full lg:w-[30%] pr-4">
+        <img src="./dist/assets/pgd_gcs.gif" alt="Project Image" class="w-full h-auto rounded-lg shadow-lg" />
+      </div>
+    
+      <!-- Text Section -->
+      <div class="w-full lg:w-[70%] pl-4">
+        <p class="text-3xl font-serif font-bold mb-4">"Planning Shorter Paths in Graphs of Convex Sets by Undistorting Parametrized Configuration Spaces"</p>
+        <p class="text-lg font-normal text-gray-700 dark:text-slate-300 mb-4">
+          (Under review) <br />
+          <b>Shruti Garg</b>, Thomas Cohn, Russ Tedrake
+        </p>
+        <div class="flex space-x-4 mb-4">
+          <a href="https://arxiv.org/abs/2411.18913" class="text-blue-500 hover:underline">[ Preprint ]</a>
+          <a href="https://shrutigarg914.github.io/pgd-gcs-results/" class="text-blue-500 hover:underline">[ Project Page ]</a>
+        </div>
+        <p class="text-lg font-normal text-gray-700 dark:text-slate-300">
+          We study a set of GCS planning domains where the nonconvexity is isolated to 
+          the objective function, allowing us to preserve the feasibility guarantees 
+          from GCS while improving motion plans. This is especially applicable for 
+          parametrizations of configuration space, as demonstrated for bimanual manipulation,
+          planning with rotations and certifiably collision-free planning.
+        </p>
+      </div>
+    </div>
+    <br />
+    <br />
+    <br />
+    </div>
+    <div class="container mx-auto w-full lg:w-[70%]">
+      <h1 class="text-4xl pt-10 pb-8"><b>My Robots- Past and Present!</b></h1>
+        <!-- Image Section -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+        <div class="w-full pr-4">
+          <div
+          class="bg-white dark:bg-neutral-900 p-5 pb-28 m-2 md:m-2 shadow-lg border border-gray-100 dark:border-neutral-800 hover:-rotate-6 transition duration-500 rotate-0 relative scale-90">
+          <img src="./dist/assets/robots/bimanual.jpeg" alt=""
+            class="smooth-edges flex flex-col w-full aspect-square object-cover h-auto" />
+          <div class="absolute bottom-0 left-0 right-0 text-center">
+            <p class="text-gray-800 dark:text-slate-200 pb-7 h-full text-4xl font-nothingyoucoulddo">bimanual iiwas</p>
+          </div>
+        </div>
+        </div>
+        <div class="w-full pr-4">
+          <div
+          class="bg-white dark:bg-neutral-900 p-5 pb-28 m-2 md:m-2 shadow-lg border border-gray-100 dark:border-neutral-800 hover:-rotate-6 transition duration-500 rotate-0 relative scale-90">
+          <img src="./dist/assets/robots/arcturus.jpeg" alt=""
+            class="smooth-edges flex flex-col w-full aspect-square object-cover h-auto" />
+          <div class="absolute bottom-0 left-0 right-0 text-center">
+            <p class="text-gray-800 dark:text-slate-200 pb-7 h-full text-4xl font-nothingyoucoulddo">arcturus</p>
+          </div>
+        </div>
+        </div>
+        <div class="w-full pr-4">
+          <div
+          class="bg-white dark:bg-neutral-900 p-5 pb-28 m-2 md:m-2 shadow-lg border border-gray-100 dark:border-neutral-800 hover:-rotate-6 transition duration-500 rotate-0 relative scale-90">
+          <img src="./dist/assets/robots/blind_ur5.jpeg" alt=""
+            class="smooth-edges flex flex-col w-full aspect-square object-cover h-auto" />
+          <div class="absolute bottom-0 left-0 right-0 text-center">
+            <p class="text-gray-800 dark:text-slate-200 pb-7 h-full text-4xl font-nothingyoucoulddo">blind ur5</p>
+          </div>
+        </div>
+        </div>
+        <div class="w-full pr-4">
+          <div
+          class="bg-white dark:bg-neutral-900 p-5 pb-28 m-2 md:m-2 shadow-lg border border-gray-100 dark:border-neutral-800 hover:-rotate-6 transition duration-500 rotate-0 relative scale-90">
+          <img src="./dist/assets/robots/carter.jpeg" alt=""
+            class="smooth-edges flex flex-col w-full aspect-square object-cover h-auto" />
+          <div class="absolute bottom-0 left-0 right-0 text-center">
+            <p class="text-gray-800 dark:text-slate-200 pb-7 h-full text-4xl font-nothingyoucoulddo">segway NVIDIA Nova Carter</p>
+          </div>
+        </div>
+        </div>
+        <div class="w-full pr-4">
+          <div
+          class="bg-white dark:bg-neutral-900 p-5 pb-28 m-2 md:m-2 shadow-lg border border-gray-100 dark:border-neutral-800 hover:-rotate-6 transition duration-500 rotate-0 relative scale-90">
+          <img src="./dist/assets/robots/tower.jpeg" alt=""
+            class="smooth-edges flex flex-col w-full object-cover h-auto" />
+          <div class="absolute bottom-0 left-0 right-0 text-center">
+            <p class="text-gray-800 dark:text-slate-200 pb-7 h-full text-4xl font-nothingyoucoulddo">simulated Anduril Towers!</p>
+          </div>
+        </div>
+        </div>
+        </div>
+      
+        <!-- Text Section
+        <div class="w-full lg:w-[70%] pl-4">
+          <p class="text-3xl font-serif font-bold mb-4">"Planning Shorter Paths in Graphs of Convex Sets by Undistorting Parametrized Configuration Spaces"</p>
+          <p class="text-lg font-normal text-gray-700 dark:text-slate-300 mb-4">
+            (Under review) <br />
+            <b>Shruti Garg</b>, Thomas Cohn, Russ Tedrake
+          </p>
+          <div class="flex space-x-4 mb-4">
+            <a href="https://arxiv.org/abs/2411.18913" class="text-blue-500 hover:underline">[ Preprint ]</a>
+            <a href="https://shrutigarg914.github.io/pgd-gcs-results/" class="text-blue-500 hover:underline">[ Project Page ]</a>
+          </div>
+          <p class="text-lg font-normal text-gray-700 dark:text-slate-300">
+            We study a set of GCS planning domains where the nonconvexity is isolated to 
+            the objective function, allowing us to preserve the feasibility guarantees 
+            from GCS while improving motion plans. This is especially applicable for 
+            parametrizations of configuration space, as demonstrated for bimanual manipulation,
+            planning with rotations and certifiably collision-free planning.
+          </p>
+        </div> -->
+              
+      </div>
+          
+  </div>
+  <!-- Footer -->
+  <footer>
+    <div class="max-w-screen-xl py-16 mx-auto">
+      <div class="grid grid-cols-1 gap-8 text-center mx-auto">
+        <div>
+          <p class="font-signika"><b>SHRUTI GARG</b></p>
+          <!-- <p class="mt-4 text-sm text-gray-600 dark:text-gray-300">
+            further internet presence
+          </p> -->
+          <div class="flex mx-auto">
+            <div class="mx-auto space-x-6 flex mt-8 text-gray-600 dark:text-gray-300">
+              <a class="transition duration-300 hover:opacity-75" href="https://github.com/shrutigarg914" target="_blank"
+                rel="noreferrer">
+                <span class="sr-only"> Github </span>
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill-rule="evenodd"
+                    d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.396.6.111.793-.26.793-.58 0-.285-.01-1.044-.015-2.052-3.338.726-4.04-1.477-4.04-1.477-.506-1.287-1.237-1.63-1.237-1.63-.987-.675.076-.662.076-.662 1.093.077 1.67 1.122 1.67 1.122.97 1.661 2.538 1.183 3.158.906.097-.704.378-1.183.687-1.46-2.664-.303-5.466-1.332-5.466-5.922 0-1.308.468-2.379 1.236-3.219-.123-.303-.536-1.522.118-3.17 0 0 1.008-.322 3.297 1.248.96-.267 1.99-.4 3.007-.404 1.016.004 2.046.137 3.007.404 2.29-1.57 3.297-1.248 3.297-1.248.654 1.648.241 2.867.118 3.17.768.84 1.236 1.911 1.236 3.219 0 4.605-2.804 5.618-5.485 5.912.388.338.734.997.734 1.994 0 1.44-.015 2.604-.015 2.954 0 .322.192.695.798.578A11.954 11.954 0 0024 12c0-6.627-5.373-12-12-12z"
+                    clip-rule="evenodd" />
+                </svg>
+              </a>
+              <a class="transition duration-300 hover:opacity-75" href="https://www.instagram.com/shrutigarg81/" target="_blank"
+                rel="noreferrer">
+                <span class="sr-only"> Instagram </span>
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fillRule="evenodd"
+                    d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
+                    clipRule="evenodd" />
+                </svg>
+              </a>
+              <!-- <a class="transition duration-300 hover:opacity-75" href="https://twitter.com" target="_blank"
+                rel="noreferrer">
+                <span class="sr-only"> Twitter </span>
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                </svg>
+              </a> -->
+              <a class="transition duration-300 hover:opacity-75" href="https://www.linkedin.com/in/sgrg914/" target="_blank"
+                rel="noreferrer">
+                <span class="sr-only">LinkedIn</span>
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="mt-8 text-xs text-gray-600 dark:text-gray-300 text-center">
+        Inspired by a design from
+        <a href="https://www.linkedin.com/in/joão-franco-452161195/" class="underline">João Franco</a>
+      </p>
+    </div>
+  </footer>
+  <script src="dist/fade_in.js"></script>
+  <script src="dist/menu.js"></script>
+</body>
+
+</html>
