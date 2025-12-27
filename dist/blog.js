@@ -148,9 +148,32 @@ class BlogManager {
 
   filterPosts() {
     // Show all posts (including private ones) - we'll handle visibility in rendering
-    let filtered = [...this.posts];
+    // Exclude the first post (id: "1") from the list as it's used as description
+    let filtered = this.posts.filter(post => post.id !== "1");
     if (this.selectedTag) filtered = filtered.filter(post => post.tags.includes(this.selectedTag));
     this.filteredPosts = filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+  }
+  
+  getDescriptionPost() {
+    // Get the first post (id: "1") to use as description
+    return this.posts.find(post => post.id === "1");
+  }
+  
+  renderDescription(container) {
+    const descPost = this.getDescriptionPost();
+    if (!descPost || (descPost.isPrivate && !this.isAuthenticated)) {
+      container.innerHTML = '';
+      return;
+    }
+    
+    const content = descPost.content ? parseMarkdown(descPost.content) : '';
+    container.innerHTML = `
+      <div class="mb-8 pb-8 border-b border-gray-200 dark:border-gray-700">
+        <div class="prose dark:prose-invert max-w-none">
+          ${content}
+        </div>
+      </div>
+    `;
   }
   
   truncateContent(content, maxLength = 300) {
@@ -225,8 +248,10 @@ class BlogManager {
   }
 
   update() {
+    const descContainer = document.getElementById('description-container');
     const tagsContainer = document.getElementById('tags-container');
     const postsContainer = document.getElementById('posts-container');
+    if (descContainer) this.renderDescription(descContainer);
     if (tagsContainer) this.renderTags(tagsContainer);
     if (postsContainer) this.renderPosts(postsContainer);
   }
