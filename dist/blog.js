@@ -121,6 +121,24 @@ class BlogManager {
     }
     return false;
   }
+  
+  async unlockPost(postId) {
+    const input = document.getElementById(`post-${postId}-password`);
+    if (!input) return;
+    
+    const password = input.value;
+    if (await this.authenticate(password)) {
+      // Re-render to show unlocked content
+      this.filterPosts();
+      this.update();
+    } else {
+      input.value = '';
+      input.placeholder = 'Incorrect password';
+      setTimeout(() => {
+        input.placeholder = 'Enter password';
+      }, 2000);
+    }
+  }
 
   checkSessionAuth() {
     if (sessionStorage.getItem('blogAuthenticated') === 'true') {
@@ -129,9 +147,25 @@ class BlogManager {
   }
 
   filterPosts() {
-    let filtered = this.posts.filter(post => this.isAuthenticated || !post.isPrivate);
+    // Show all posts (including private ones) - we'll handle visibility in rendering
+    let filtered = [...this.posts];
     if (this.selectedTag) filtered = filtered.filter(post => post.tags.includes(this.selectedTag));
     this.filteredPosts = filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+  }
+  
+  truncateContent(content, maxLength = 300) {
+    if (!content) return '';
+    // Remove markdown formatting for length calculation
+    const plainText = content.replace(/#{1,6}\s+/g, '').replace(/\*\*/g, '').replace(/\*/g, '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+    if (plainText.length <= maxLength) return content;
+    
+    // Find a good breaking point (end of sentence or word)
+    let truncated = content.substring(0, maxLength);
+    const lastPeriod = truncated.lastIndexOf('.');
+    const lastSpace = truncated.lastIndexOf(' ');
+    const breakPoint = lastPeriod > maxLength * 0.8 ? lastPeriod + 1 : lastSpace;
+    
+    return content.substring(0, breakPoint) + '...';
   }
 
   selectTag(tag) {
@@ -228,20 +262,78 @@ class BlogManager {
       const styles = this.getPostStyles(post);
       const hasContentFile = post.contentFile && !post.content;
       const postId = `post-${post.id}`;
-      const content = post.content ? parseMarkdown(post.content) : 
-        (hasContentFile ? '<div class="text-center py-8"><p class="text-gray-500 dark:text-gray-400">Loading...</p></div>' : '');
+      const isPrivateAndLocked = post.isPrivate && !this.isAuthenticated;
+      
+      // Get full content for truncation check (only if not private and locked)
+      let fullContent = '';
+      let needsTruncation = false;
+      let truncatedContent = '';
+      
+      if (!isPrivateAndLocked) {
+        if (post.content) {
+          fullContent = post.content;
+          needsTruncation = fullContent.length > 300;
+          truncatedContent = needsTruncation ? this.truncateContent(fullContent) : fullContent;
+        } else if (hasContentFile) {
+          // For external files, we'll check length after loading, but assume it might be long
+          needsTruncation = true;
+        }
+      }
+      
+      // Render content based on privacy and truncation
+      let contentHtml = '';
+      if (isPrivateAndLocked) {
+        // Private post - show password prompt below title
+        contentHtml = `
+          <div class="mt-4 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">This post is password-protected.</p>
+            <div class="flex gap-2">
+              <input type="password" 
+                     id="post-${post.id}-password"
+                     placeholder="Enter password"
+                     class="flex-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-800 bg-white text-black dark:text-white"
+                     onkeyup="if(event.key==='Enter') blogManager.unlockPost('${post.id}')">
+              <button onclick="blogManager.unlockPost('${post.id}')"
+                      class="px-4 py-2 text-sm bg-black dark:bg-white text-white dark:text-black rounded-md hover:opacity-80 transition-opacity font-signika">
+                Unlock
+              </button>
+            </div>
+          </div>
+        `;
+      } else if (needsTruncation && post.content) {
+        // Truncated content with read more link
+        contentHtml = `
+          <div class="${styles.contentClass}" id="${postId}-content">${parseMarkdown(truncatedContent)}</div>
+          <a href="./blog-post.html?id=${post.id}" class="inline-block mt-4 text-blue-600 dark:text-blue-400 hover:underline font-signika">
+            Read more →
+          </a>
+        `;
+      } else if (hasContentFile) {
+        // External file - show excerpt and loading, will link to full page
+        contentHtml = `
+          ${post.excerpt ? `<p class="text-gray-600 dark:text-gray-400 italic mb-4">${post.excerpt}</p>` : ''}
+          <a href="./blog-post.html?id=${post.id}" class="inline-block mt-4 text-blue-600 dark:text-blue-400 hover:underline font-signika">
+            Read more →
+          </a>
+        `;
+      } else if (post.content) {
+        // Full content (short post)
+        contentHtml = `<div class="${styles.contentClass}" id="${postId}-content">${parseMarkdown(fullContent)}</div>`;
+      }
 
       return `
         ${styles.customCSS ? `<style>${styles.customCSS}</style>` : ''}
         <article class="${styles.articleClass}" id="${postId}">
           <div class="${styles.containerClass}">
             <div class="flex items-center justify-between mb-4">
-              <h2 class="${styles.titleClass}">${post.title}</h2>
+              ${needsTruncation || hasContentFile ? 
+                `<a href="./blog-post.html?id=${post.id}" class="${styles.titleClass} hover:opacity-80 transition-opacity">${post.title}</a>` :
+                `<h2 class="${styles.titleClass}">${post.title}</h2>`
+              }
               ${post.isPrivate ? '<span class="px-2 py-1 text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded">Private</span>' : ''}
             </div>
             <div class="flex flex-wrap gap-2 mb-4">${post.tags.map(tagBtn).join('')}</div>
-            ${post.excerpt && hasContentFile ? `<p class="text-gray-600 dark:text-gray-400 italic mb-4">${post.excerpt}</p>` : ''}
-            <div class="${styles.contentClass}" id="${postId}-content">${content}</div>
+            ${contentHtml}
             <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 text-sm text-gray-500 dark:text-gray-400">
               Posted on <time datetime="${post.date}">${formatDate(post.date)}</time>
             </div>
@@ -252,16 +344,25 @@ class BlogManager {
 
     // Load external files
     this.filteredPosts.forEach(async post => {
-      if (post.contentFile && !post.content) {
+      if (post.contentFile && !post.content && (!post.isPrivate || this.isAuthenticated)) {
         const el = document.getElementById(`post-${post.id}-content`);
-        if (el) el.innerHTML = parseMarkdown(await this.loadContentFile(post.contentFile));
+        if (el) {
+          const markdownContent = await this.loadContentFile(post.contentFile);
+          el.innerHTML = parseMarkdown(markdownContent);
+        }
       }
     });
+  }
+  
+  getPostById(id) {
+    return this.posts.find(post => post.id === id);
   }
 }
 
 const blogManager = new BlogManager();
 window.blogManager = blogManager;
+window.parseMarkdown = parseMarkdown;
+window.formatDate = formatDate;
 
 document.addEventListener('DOMContentLoaded', async () => {
   blogManager.checkSessionAuth();

@@ -5,8 +5,8 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shruti Garg - Blog</title>
-  <meta name="description" content="Shruti's Blog">
+  <title>Blog Post - Shruti Garg</title>
+  <meta name="description" content="Blog Post">
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="./assets/favicon.ico" />
   <link rel="stylesheet" href="./output.css" />
@@ -17,12 +17,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Signika:wght@400;700&display=swap" rel="stylesheet">
   <!-- End - Fonts -->
-  <!-- EmailJS for email subscriptions (optional - comment out if not using) -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script type="text/javascript">
-    // Initialize EmailJS (replace with your public key)
-    // emailjs.init('YOUR_PUBLIC_KEY');
-  </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -40,7 +34,7 @@
   </script>
 </head>
 
-<body class="dark:bg-black bg-white h-screen text-black dark:text-white px-5 md:px-20 transition duration-500">
+<body class="dark:bg-black bg-white h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500">
   <!-- Navbar -->
   <header class="flex w-full overflow-hidden pt-10 pb-1">
     <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
@@ -88,7 +82,7 @@
             </li>
             <li class="group transition duration-300">
               <a href="./blog.html" class="font-signika text-2xl tap-highlight-transparent">BLOG
-                <span class="hidden md:block h-0.5 bg-black dark:bg-white"></span>
+                <span class="hidden md:block h-0.5 bg-black dark:text-white"></span>
               </a>
             </li>
             <li class="group transition duration-300">
@@ -103,148 +97,16 @@
   </header>
 
   <!-- Content -->
-  <div class="container mx-auto mt-10 mb-16" 
-       x-data="{ 
-         isAuthenticated: false, 
-         password: '',
-         errorMessage: '',
-         init() {
-           // Check if already authenticated from session
-           if (window.blogManager && window.blogManager.isAuthenticated) {
-             this.isAuthenticated = true;
-           }
-         },
-         async handleAuth() {
-           if (window.blogManager && await window.blogManager.authenticate(this.password)) {
-             this.isAuthenticated = true;
-             this.errorMessage = '';
-             window.blogManager.filterPosts();
-             window.blogManager.update();
-           } else {
-             this.errorMessage = 'Incorrect password. Please try again.';
-           }
-         }
-       }">
-    
-    <!-- Password Protection (shown when not authenticated and there are private posts) -->
-    <div x-show="!isAuthenticated" 
-         x-data="{ hasPrivatePosts: false }"
-         x-init="
-           setTimeout(() => {
-             if (window.blogManager) {
-               hasPrivatePosts = window.blogManager.posts.some(p => p.isPrivate);
-             }
-           }, 100);
-         "
-         class="max-w-md mx-auto text-center">
-      <h2 class="text-2xl font-signika mb-4">Blog Access</h2>
-      <p class="mb-4" x-show="hasPrivatePosts">
-        Some posts are password-protected. Enter the password to view all content:
-      </p>
-      <p class="mb-4" x-show="!hasPrivatePosts">
-        Public posts are available below. Enter password to view private posts:
-      </p>
-      <div class="flex flex-col gap-3">
-        <div class="flex gap-2">
-          <input type="password" 
-                 x-model="password" 
-                 @keyup.enter="handleAuth()"
-                 class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-800 bg-white text-black dark:text-white"
-                 placeholder="Enter password">
-          <button @click="handleAuth()"
-                  class="px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-md hover:opacity-80 transition-opacity font-signika">
-            Submit
-          </button>
-        </div>
-        <p x-show="errorMessage" class="text-red-500 text-sm" x-text="errorMessage"></p>
+  <div class="container mx-auto mt-10 mb-16 max-w-4xl">
+    <div id="post-container" class="space-y-8">
+      <div class="text-center">
+        <p class="text-gray-500 dark:text-gray-400">Loading post...</p>
       </div>
     </div>
-
-    <!-- Email Subscription - Corner Widget -->
-    <div class="fixed bottom-4 right-4 z-50 w-56 bg-gray-50 dark:bg-gray-900 rounded-lg shadow-lg border border-gray-200 dark:border-gray-800 p-3"
-           x-data="{ 
-             minimized: true,
-             email: '', 
-             subscribed: false, 
-             error: '',
-             loading: false,
-             async subscribe() {
-               if (!this.email || !this.email.includes('@')) {
-                 this.error = 'Please enter a valid email address';
-                 return;
-               }
-               this.loading = true;
-               this.error = '';
-               
-               try {
-                 if (typeof emailjs !== 'undefined') {
-                   await emailjs.send(
-                     'YOUR_SERVICE_ID',
-                     'YOUR_TEMPLATE_ID',
-                     {
-                       to_email: 'your-email@example.com',
-                       subscriber_email: this.email,
-                       message: `New blog subscriber: ${this.email}`
-                     },
-                     'YOUR_PUBLIC_KEY'
-                   );
-                 } else {
-                   const subscribers = JSON.parse(localStorage.getItem('blogSubscribers') || '[]');
-                   if (!subscribers.includes(this.email)) {
-                     subscribers.push(this.email);
-                     localStorage.setItem('blogSubscribers', JSON.stringify(subscribers));
-                   }
-                 }
-                 
-                 this.subscribed = true;
-                 this.email = '';
-               } catch (error) {
-                 console.error('Subscription error:', error);
-                 this.error = 'Something went wrong. Please try again later.';
-               } finally {
-                 this.loading = false;
-               }
-             }
-           }">
-        <button @click="minimized = !minimized" 
-                class="absolute top-2 right-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-xs w-5 h-5 flex items-center justify-center">
-          <span x-show="!minimized">−</span>
-          <span x-show="minimized">+</span>
-        </button>
-        <h3 class="text-sm font-signika font-bold mb-2 pr-6">Subscribe</h3>
-        <div x-show="!minimized" x-transition>
-          <p class="text-xs text-gray-600 dark:text-gray-400 mb-3">
-            Get notified of new posts.
-          </p>
-          <div x-show="!subscribed" class="space-y-2">
-            <input type="email" 
-                   x-model="email"
-                   @keyup.enter="subscribe()"
-                   placeholder="email@example.com"
-                   class="w-full px-2 py-1.5 text-xs border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-800 bg-white text-black dark:text-white"
-                   :disabled="loading">
-            <button @click="subscribe()"
-                    :disabled="loading"
-                    class="w-full px-3 py-1.5 text-xs bg-black dark:bg-white text-white dark:text-black rounded-md hover:opacity-80 transition-opacity font-signika disabled:opacity-50">
-              <span x-show="!loading">Subscribe</span>
-              <span x-show="loading">...</span>
-            </button>
-          </div>
-          <div x-show="subscribed" class="text-xs text-green-600 dark:text-green-400">
-            ✓ Subscribed!
-          </div>
-          <p x-show="error" class="text-xs text-red-500 mt-1" x-text="error"></p>
-        </div>
-      </div>
-
-    <!-- Blog Content -->
-    <div class="mt-10">
-
-      <!-- Tag Filter -->
-      <div id="tags-container" class="mb-8"></div>
-      
-      <!-- Blog Posts Container -->
-      <div id="posts-container" class="space-y-8"></div>
+    <div class="mt-8 text-center">
+      <a href="./blog.html" class="text-blue-600 dark:text-blue-400 hover:underline font-signika">
+        ← Back to all posts
+      </a>
     </div>
   </div>
 
@@ -294,8 +156,89 @@
   </footer>
 
   <script src="./blog.js"></script>
+  <script>
+    // Load and display single post
+    document.addEventListener('DOMContentLoaded', async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const postId = urlParams.get('id');
+      
+      if (!postId) {
+        document.getElementById('post-container').innerHTML = '<p class="text-center text-red-500">Post not found.</p>';
+        return;
+      }
+      
+      // Load blog manager
+      if (!window.blogManager) {
+        const blogManager = new BlogManager();
+        window.blogManager = blogManager;
+        await blogManager.loadPosts();
+        blogManager.checkSessionAuth();
+      }
+      
+      const post = window.blogManager.getPostById(postId);
+      
+      if (!post) {
+        document.getElementById('post-container').innerHTML = '<p class="text-center text-red-500">Post not found.</p>';
+        return;
+      }
+      
+      // Check if private and not authenticated
+      if (post.isPrivate && !window.blogManager.isAuthenticated) {
+        document.getElementById('post-container').innerHTML = `
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
+            <h1 class="text-3xl font-signika font-bold mb-4">${post.title}</h1>
+            <div class="mt-4 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
+              <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">This post is password-protected.</p>
+              <div class="flex gap-2">
+                <input type="password" 
+                       id="post-password"
+                       placeholder="Enter password"
+                       class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-800 bg-white text-black dark:text-white"
+                       onkeyup="if(event.key==='Enter') { window.blogManager.authenticate(document.getElementById('post-password').value).then(auth => { if(auth) location.reload(); }); }">
+                <button onclick="window.blogManager.authenticate(document.getElementById('post-password').value).then(auth => { if(auth) location.reload(); })"
+                        class="px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-md hover:opacity-80 transition-opacity font-signika">
+                  Unlock
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+      
+      // Render full post
+      const styles = window.blogManager.getPostStyles(post);
+      let content = '';
+      
+      if (post.contentFile && !post.content) {
+        const markdownContent = await window.blogManager.loadContentFile(post.contentFile);
+        content = window.parseMarkdown ? window.parseMarkdown(markdownContent) : markdownContent;
+      } else if (post.content) {
+        content = window.parseMarkdown ? window.parseMarkdown(post.content) : post.content;
+      }
+      
+      const tagBtn = (tag) => `<a href="./blog.html?tag=${tag}" class="px-3 py-1 text-xs rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">#${tag}</a>`;
+      
+      document.getElementById('post-container').innerHTML = `
+        <article class="${styles.articleClass}">
+          <div class="${styles.containerClass}">
+            <div class="flex items-center justify-between mb-4">
+              <h1 class="${styles.titleClass}">${post.title}</h1>
+              ${post.isPrivate ? '<span class="px-2 py-1 text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded">Private</span>' : ''}
+            </div>
+            <div class="flex flex-wrap gap-2 mb-4">${post.tags.map(tagBtn).join('')}</div>
+            <div class="${styles.contentClass}">${content}</div>
+            <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 text-sm text-gray-500 dark:text-gray-400">
+              Posted on <time datetime="${post.date}">${window.formatDate ? window.formatDate(post.date) : new Date(post.date).toLocaleDateString()}</time>
+            </div>
+          </div>
+        </article>
+      `;
+    });
+  </script>
   <script src="./fade_in.js"></script>
   <script src="./menu.js"></script>
 </body>
 
-</html> 
+</html>
+
