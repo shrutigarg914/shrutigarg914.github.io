@@ -2,88 +2,88 @@
   "posts": [
     {
       "id": "1",
-      "title": "Welcome to My Blog",
-      "date": "2024-12-20",
-      "tags": ["welcome", "personal"],
+      "title": "Hello World!",
+      "date": "2024-12-26",
+      "tags": ["personal"],
       "isPrivate": false,
-      "excerpt": "This is my first blog post. Welcome!",
-      "content": "# Welcome to My Blog\n\nThis is my first blog post. I'm excited to share my thoughts and experiences here.\n\n## What to Expect\n\n- Personal reflections\n- Technical insights\n- Photography stories\n- And more!\n\nStay tuned for more content.",
+      "excerpt": "First Blog!",
+      "content": "I was missing tumblr microblogging (sue me), so I got cursor to build me a mini tumblr to put on my website? (sue me twice!) \nAs a relatively recent new grad, a lot of my friends (you guys) are all over the place now. I'm hoping these blogs can be a little piece of the late night beanbag talks we took for granted, no matter where we are now. Maybe it will give you a new book recommendation, a little laugh or a reminder that we are all just silly little humans doing silly little human things that are, lowkey, all the same. Do be nice to me though... I am only 3 years old after all! \nComing up next: a movie review maybe?!",
       "images": []
     },
-    {
-      "id": "2",
-      "title": "Private Thoughts",
-      "date": "2024-12-19",
-      "tags": ["personal", "private"],
-      "isPrivate": true,
-      "excerpt": "Some private thoughts that require password access.",
-      "content": "# Private Thoughts\n\nThis is a private post that requires password authentication to view.\n\nYou can use this for personal journaling or sharing with select people.",
-      "images": []
-    },
-    {
-      "id": "3",
-      "title": "A Day in Lisbon",
-      "date": "2024-12-18",
-      "tags": ["travel", "photography", "lisbon"],
-      "isPrivate": false,
-      "excerpt": "Exploring the beautiful streets of Lisbon with my camera.",
-      "content": "# A Day in Lisbon\n\nToday I spent the day exploring Lisbon. The light was perfect for photography.\n\n![Lisbon View](../fotos/SGRG_filmscan/SGRG-30.jpg)\n\n*The MAAT museum with the Tagus river in the background*\n\nThe architecture here is stunning, and I captured some great shots.",
-      "images": [
-        {
-          "src": "../fotos/SGRG_filmscan/SGRG-30.jpg",
-          "alt": "MAAT museum in Lisbon"
-        }
-      ]
-    },
-    {
-      "id": "4",
-      "title": "Example Long-Form Post",
-      "date": "2024-12-17",
-      "tags": ["example", "meta"],
-      "isPrivate": false,
-      "excerpt": "This demonstrates how long-form posts work with external markdown files.",
-      "contentFile": "./blog-posts/example-long-post.md",
-      "images": []
-    },
-    {
-      "id": "5",
-      "title": "Minimal Style Post",
-      "date": "2024-12-16",
-      "tags": ["example", "styling"],
-      "isPrivate": false,
-      "excerpt": "This post uses the 'minimal' template for a cleaner, more spacious look.",
-      "content": "# Minimal Style\n\nThis post uses the `template: 'minimal'` option for a cleaner, border-only design.\n\nPerfect for more contemplative or personal posts.",
-      "template": "minimal",
-      "images": []
-    },
-    {
-      "id": "6",
-      "title": "Featured Post with Custom Styling",
-      "date": "2024-12-15",
-      "tags": ["example", "featured"],
-      "isPrivate": false,
-      "excerpt": "This post uses the 'featured' template with gradient background.",
-      "content": "# Featured Post\n\nThis post uses the `template: 'featured'` option for a more prominent, eye-catching design.\n\nGreat for important announcements or special content!",
-      "template": "featured",
-      "images": []
-    },
-    {
-      "id": "7",
-      "title": "Fully Custom Styled Post",
-      "date": "2024-12-14",
-      "tags": ["example", "custom"],
-      "isPrivate": false,
-      "excerpt": "This post uses completely custom CSS styling.",
-      "content": "# Custom Styled Post\n\nThis post uses the `style` object for complete control over appearance.\n\nYou can customize:\n- Article background and borders\n- Container padding\n- Title styling\n- Content area styling\n- Any custom CSS",
-      "style": {
-        "articleClass": "bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900 dark:to-purple-900 rounded-2xl shadow-2xl mb-8",
-        "containerClass": "p-10 md:p-16",
-        "titleClass": "text-4xl font-signika font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent",
-        "contentClass": "prose dark:prose-invert max-w-none mb-4 text-lg",
-        "customCSS": "#post-7 { animation: fadeIn 0.5s ease-in; }"
-      },
-      "images": []
-    }
+    // {
+    //   "id": "2",
+    //   "title": "Private Thoughts",
+    //   "date": "2024-12-19",
+    //   "tags": ["personal", "private"],
+    //   "isPrivate": true,
+    //   "excerpt": "Some private thoughts that require password access.",
+    //   "content": "# Private Thoughts\n\nThis is a private post that requires password authentication to view.\n\nYou can use this for personal journaling or sharing with select people.",
+    //   "images": []
+    // },
+    // {
+    //   "id": "3",
+    //   "title": "A Day in Lisbon",
+    //   "date": "2024-12-18",
+    //   "tags": ["travel", "photography", "lisbon"],
+    //   "isPrivate": false,
+    //   "excerpt": "Exploring the beautiful streets of Lisbon with my camera.",
+    //   "content": "# A Day in Lisbon\n\nToday I spent the day exploring Lisbon. The light was perfect for photography.\n\n![Lisbon View](../fotos/SGRG_filmscan/SGRG-30.jpg)\n\n*The MAAT museum with the Tagus river in the background*\n\nThe architecture here is stunning, and I captured some great shots.",
+    //   "images": [
+    //     {
+    //       "src": "../fotos/SGRG_filmscan/SGRG-30.jpg",
+    //       "alt": "MAAT museum in Lisbon"
+    //     }
+    //   ]
+    // },
+    // {
+    //   "id": "4",
+    //   "title": "Example Long-Form Post",
+    //   "date": "2024-12-17",
+    //   "tags": ["example", "meta"],
+    //   "isPrivate": false,
+    //   "excerpt": "This demonstrates how long-form posts work with external markdown files.",
+    //   "contentFile": "./blog-posts/example-long-post.md",
+    //   "images": []
+    // },
+    // {
+    //   "id": "5",
+    //   "title": "Minimal Style Post",
+    //   "date": "2024-12-16",
+    //   "tags": ["example", "styling"],
+    //   "isPrivate": false,
+    //   "excerpt": "This post uses the 'minimal' template for a cleaner, more spacious look.",
+    //   "content": "# Minimal Style\n\nThis post uses the `template: 'minimal'` option for a cleaner, border-only design.\n\nPerfect for more contemplative or personal posts.",
+    //   "template": "minimal",
+    //   "images": []
+    // },
+    // {
+    //   "id": "6",
+    //   "title": "Featured Post with Custom Styling",
+    //   "date": "2024-12-15",
+    //   "tags": ["example", "featured"],
+    //   "isPrivate": false,
+    //   "excerpt": "This post uses the 'featured' template with gradient background.",
+    //   "content": "# Featured Post\n\nThis post uses the `template: 'featured'` option for a more prominent, eye-catching design.\n\nGreat for important announcements or special content!",
+    //   "template": "featured",
+    //   "images": []
+    // },
+    // {
+    //   "id": "7",
+    //   "title": "Fully Custom Styled Post",
+    //   "date": "2024-12-14",
+    //   "tags": ["example", "custom"],
+    //   "isPrivate": false,
+    //   "excerpt": "This post uses completely custom CSS styling.",
+    //   "content": "# Custom Styled Post\n\nThis post uses the `style` object for complete control over appearance.\n\nYou can customize:\n- Article background and borders\n- Container padding\n- Title styling\n- Content area styling\n- Any custom CSS",
+    //   "style": {
+    //     "articleClass": "bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900 dark:to-purple-900 rounded-2xl shadow-2xl mb-8",
+    //     "containerClass": "p-10 md:p-16",
+    //     "titleClass": "text-4xl font-signika font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent",
+    //     "contentClass": "prose dark:prose-invert max-w-none mb-4 text-lg",
+    //     "customCSS": "#post-7 { animation: fadeIn 0.5s ease-in; }"
+    //   },
+    //   "images": []
+    // }
   ]
 }
 
