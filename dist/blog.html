@@ -17,6 +17,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Signika:wght@400;700&display=swap" rel="stylesheet">
   <!-- End - Fonts -->
+  <!-- EmailJS for email subscriptions (optional - comment out if not using) -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script type="text/javascript">
+    // Initialize EmailJS (replace with your public key)
+    // emailjs.init('YOUR_PUBLIC_KEY');
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -97,43 +103,143 @@
   </header>
 
   <!-- Content -->
-  <div class="container mx-auto mt-10" x-data="{ isAuthenticated: false, password: '' }">
-    <!-- Password Protection -->
-    <div x-show="!isAuthenticated" class="max-w-md mx-auto text-center">
-      <h2 class="text-2xl font-signika mb-4">Protected Blog</h2>
-      <p class="mb-4">Please enter the password to access the blog:</p>
-      <div class="flex gap-2">
-        <input type="password" x-model="password" 
-          class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-800"
-          placeholder="Enter password">
-        <button @click="isAuthenticated = password === 'your-password-here'"
-          class="px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-md hover:opacity-80 transition-opacity">
-          Submit
-        </button>
+  <div class="container mx-auto mt-10 mb-16" 
+       x-data="{ 
+         isAuthenticated: false, 
+         password: '',
+         errorMessage: '',
+         init() {
+           // Check if already authenticated from session
+           if (window.blogManager && window.blogManager.isAuthenticated) {
+             this.isAuthenticated = true;
+           }
+         },
+         async handleAuth() {
+           if (window.blogManager && await window.blogManager.authenticate(this.password)) {
+             this.isAuthenticated = true;
+             this.errorMessage = '';
+             window.blogManager.filterPosts();
+             window.blogManager.update();
+           } else {
+             this.errorMessage = 'Incorrect password. Please try again.';
+           }
+         }
+       }">
+    
+    <!-- Password Protection (shown when not authenticated and there are private posts) -->
+    <div x-show="!isAuthenticated" 
+         x-data="{ hasPrivatePosts: false }"
+         x-init="
+           setTimeout(() => {
+             if (window.blogManager) {
+               hasPrivatePosts = window.blogManager.posts.some(p => p.isPrivate);
+             }
+           }, 100);
+         "
+         class="max-w-md mx-auto text-center">
+      <h2 class="text-2xl font-signika mb-4">Blog Access</h2>
+      <p class="mb-4" x-show="hasPrivatePosts">
+        Some posts are password-protected. Enter the password to view all content:
+      </p>
+      <p class="mb-4" x-show="!hasPrivatePosts">
+        Public posts are available below. Enter password to view private posts:
+      </p>
+      <div class="flex flex-col gap-3">
+        <div class="flex gap-2">
+          <input type="password" 
+                 x-model="password" 
+                 @keyup.enter="handleAuth()"
+                 class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-800 bg-white text-black dark:text-white"
+                 placeholder="Enter password">
+          <button @click="handleAuth()"
+                  class="px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-md hover:opacity-80 transition-opacity font-signika">
+            Submit
+          </button>
+        </div>
+        <p x-show="errorMessage" class="text-red-500 text-sm" x-text="errorMessage"></p>
       </div>
     </div>
 
     <!-- Blog Content -->
-    <div x-show="isAuthenticated" class="space-y-12">
-      <!-- Blog Posts Container -->
-      <div class="grid gap-8">
-        <!-- Example Blog Post -->
-        <article class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-          <div class="p-6">
-            <h2 class="text-2xl font-signika font-bold mb-4">Example Blog Post Title</h2>
-            <div class="prose dark:prose-invert max-w-none">
-              <p>Your blog post content goes here...</p>
-              <!-- Substack Embed -->
-              <div class="substack-embed-container">
-                <!-- Add your Substack embed code here -->
-              </div>
-            </div>
-            <div class="mt-4 text-sm text-gray-500">
-              Posted on <time datetime="2024-03-20">March 20, 2024</time>
-            </div>
-          </div>
-        </article>
+    <div class="mt-10">
+      <!-- Email Subscription -->
+      <div class="max-w-2xl mx-auto mb-12 bg-gray-50 dark:bg-gray-900 rounded-lg p-6 border border-gray-200 dark:border-gray-800"
+           x-data="{ 
+             email: '', 
+             subscribed: false, 
+             error: '',
+             loading: false,
+             async subscribe() {
+               if (!this.email || !this.email.includes('@')) {
+                 this.error = 'Please enter a valid email address';
+                 return;
+               }
+               this.loading = true;
+               this.error = '';
+               
+               // Using EmailJS for email functionality (free tier available)
+               // You'll need to set up EmailJS and add your service ID, template ID, and public key
+               try {
+                 // Option 1: EmailJS (recommended - no backend needed)
+                 if (typeof emailjs !== 'undefined') {
+                   await emailjs.send(
+                     'YOUR_SERVICE_ID',  // Replace with your EmailJS service ID
+                     'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
+                     {
+                       to_email: 'your-email@example.com', // Your email
+                       subscriber_email: this.email,
+                       message: `New blog subscriber: ${this.email}`
+                     },
+                     'YOUR_PUBLIC_KEY'  // Replace with your EmailJS public key
+                   );
+                 } else {
+                   // Fallback: Store in localStorage (you can export this list)
+                   const subscribers = JSON.parse(localStorage.getItem('blogSubscribers') || '[]');
+                   if (!subscribers.includes(this.email)) {
+                     subscribers.push(this.email);
+                     localStorage.setItem('blogSubscribers', JSON.stringify(subscribers));
+                   }
+                 }
+                 
+                 this.subscribed = true;
+                 this.email = '';
+               } catch (error) {
+                 console.error('Subscription error:', error);
+                 this.error = 'Something went wrong. Please try again later.';
+               } finally {
+                 this.loading = false;
+               }
+             }
+           }">
+        <h3 class="text-xl font-signika font-bold mb-2">Subscribe to Blog Updates</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+          Get notified when I publish new posts. I'll send you an email digest of new content.
+        </p>
+        <div x-show="!subscribed" class="flex gap-2">
+          <input type="email" 
+                 x-model="email"
+                 @keyup.enter="subscribe()"
+                 placeholder="your.email@example.com"
+                 class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-800 bg-white text-black dark:text-white"
+                 :disabled="loading">
+          <button @click="subscribe()"
+                  :disabled="loading"
+                  class="px-6 py-2 bg-black dark:bg-white text-white dark:text-black rounded-md hover:opacity-80 transition-opacity font-signika disabled:opacity-50">
+            <span x-show="!loading">Subscribe</span>
+            <span x-show="loading">...</span>
+          </button>
+        </div>
+        <div x-show="subscribed" class="text-green-600 dark:text-green-400">
+          ✓ Subscribed! You'll receive email updates when I publish new posts.
+        </div>
+        <p x-show="error" class="text-red-500 text-sm mt-2" x-text="error"></p>
       </div>
+
+      <!-- Tag Filter -->
+      <div id="tags-container" class="mb-8"></div>
+      
+      <!-- Blog Posts Container -->
+      <div id="posts-container" class="space-y-8"></div>
     </div>
   </div>
 
@@ -182,6 +288,7 @@
     </div>
   </footer>
 
+  <script src="./blog.js"></script>
   <script src="./fade_in.js"></script>
   <script src="./menu.js"></script>
 </body>
