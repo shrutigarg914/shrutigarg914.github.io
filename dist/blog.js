@@ -113,7 +113,7 @@ class BlogManager {
   }
 
   async authenticate(inputPassword) {
-    const correctPasswordHash = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
+    const correctPasswordHash = '6b7cde28861e30e4fcccc63107d16ccd0bcba8168284096f8bffd1486a45c473';
     if (await this.hashPassword(inputPassword) === correctPasswordHash) {
       this.isAuthenticated = true;
       sessionStorage.setItem('blogAuthenticated', 'true');
