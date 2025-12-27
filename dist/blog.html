@@ -126,9 +126,8 @@
          }
        }">
     
-    <!-- Password Protection (shown when not authenticated and there are private posts) -->
-    <div x-show="!isAuthenticated" 
-         x-data="{ hasPrivatePosts: false }"
+    <!-- Password Protection - One line notice -->
+    <div x-data="{ hasPrivatePosts: false }"
          x-init="
            setTimeout(() => {
              if (window.blogManager) {
@@ -136,28 +135,9 @@
              }
            }, 100);
          "
-         class="max-w-md mx-auto text-center">
-      <h2 class="text-2xl font-signika mb-4">Blog Access</h2>
-      <p class="mb-4" x-show="hasPrivatePosts">
-        Some posts are password-protected. Enter the password to view all content:
-      </p>
-      <p class="mb-4" x-show="!hasPrivatePosts">
-        Public posts are available below. Enter password to view private posts:
-      </p>
-      <div class="flex flex-col gap-3">
-        <div class="flex gap-2">
-          <input type="password" 
-                 x-model="password" 
-                 @keyup.enter="handleAuth()"
-                 class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-800 bg-white text-black dark:text-white"
-                 placeholder="Enter password">
-          <button @click="handleAuth()"
-                  class="px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-md hover:opacity-80 transition-opacity font-signika">
-            Submit
-          </button>
-        </div>
-        <p x-show="errorMessage" class="text-red-500 text-sm" x-text="errorMessage"></p>
-      </div>
+         x-show="!isAuthenticated && hasPrivatePosts"
+         class="mb-4 text-sm text-gray-600 dark:text-gray-400 text-center">
+      <span>Some posts are private. Enter password below individual posts to unlock them.</span>
     </div>
 
     <!-- Email Subscription - Corner Widget -->
