@@ -153,19 +153,38 @@ class BlogManager {
     this.filteredPosts = filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
   }
   
-  truncateContent(content, maxLength = 300) {
+  truncateContent(content, maxWords = 600) {
     if (!content) return '';
-    // Remove markdown formatting for length calculation
-    const plainText = content.replace(/#{1,6}\s+/g, '').replace(/\*\*/g, '').replace(/\*/g, '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
-    if (plainText.length <= maxLength) return content;
+    // Count words in content
+    const wordCount = content.split(/\s+/).filter(word => word.length > 0).length;
+    if (wordCount <= maxWords) return content;
     
-    // Find a good breaking point (end of sentence or word)
-    let truncated = content.substring(0, maxLength);
-    const lastPeriod = truncated.lastIndexOf('.');
-    const lastSpace = truncated.lastIndexOf(' ');
-    const breakPoint = lastPeriod > maxLength * 0.8 ? lastPeriod + 1 : lastSpace;
+    // Find a good breaking point after maxWords
+    const words = content.split(/(\s+)/);
+    let wordCountSoFar = 0;
+    let breakPoint = 0;
     
-    return content.substring(0, breakPoint) + '...';
+    for (let i = 0; i < words.length; i++) {
+      const word = words[i].trim();
+      if (word && !word.match(/^\s+$/)) {
+        wordCountSoFar++;
+        if (wordCountSoFar >= maxWords) {
+          // Try to break at end of sentence
+          const textSoFar = words.slice(0, i + 1).join('');
+          const lastPeriod = textSoFar.lastIndexOf('.');
+          const lastNewline = textSoFar.lastIndexOf('\n\n');
+          breakPoint = lastNewline > lastPeriod ? lastNewline : (lastPeriod > 0 ? lastPeriod + 1 : i + 1);
+          break;
+        }
+      }
+    }
+    
+    return words.slice(0, breakPoint || words.length).join('').trim() + '...';
+  }
+  
+  getWordCount(content) {
+    if (!content) return 0;
+    return content.split(/\s+/).filter(word => word.length > 0).length;
   }
 
   selectTag(tag) {
@@ -272,10 +291,12 @@ class BlogManager {
       if (!isPrivateAndLocked) {
         if (post.content) {
           fullContent = post.content;
-          needsTruncation = fullContent.length > 300;
-          truncatedContent = needsTruncation ? this.truncateContent(fullContent) : fullContent;
+          const wordCount = this.getWordCount(fullContent);
+          needsTruncation = wordCount > 600;
+          truncatedContent = needsTruncation ? this.truncateContent(fullContent, 600) : fullContent;
         } else if (hasContentFile) {
-          // For external files, we'll check length after loading, but assume it might be long
+          // For external files, assume they might be long (will check after loading)
+          // We'll show excerpt + read more link
           needsTruncation = true;
         }
       }
