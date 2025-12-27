@@ -152,7 +152,7 @@ class BlogManager {
 
   getPostStyles(post) {
     const defaults = {
-      articleClass: 'bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden mb-8 opacity-0 animate-fade-in',
+      articleClass: 'bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden mb-8',
       containerClass: 'p-6 md:p-8',
       titleClass: 'text-2xl md:text-3xl font-signika font-bold',
       contentClass: 'max-w-none mb-4'
@@ -164,13 +164,13 @@ class BlogManager {
 
     const templates = {
       minimal: {
-        articleClass: 'bg-transparent border-b border-gray-200 dark:border-gray-700 mb-12 pb-8 opacity-0 animate-fade-in',
+        articleClass: 'bg-transparent border-b border-gray-200 dark:border-gray-700 mb-12 pb-8',
         containerClass: 'p-0',
         titleClass: 'text-3xl md:text-4xl font-signika font-light mb-6',
         contentClass: 'max-w-3xl mb-4 text-lg leading-relaxed'
       },
       featured: {
-        articleClass: 'bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 rounded-xl shadow-xl overflow-hidden mb-8 opacity-0 animate-fade-in border-2 border-gray-200 dark:border-gray-700',
+        articleClass: 'bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 rounded-xl shadow-xl overflow-hidden mb-8 border-2 border-gray-200 dark:border-gray-700',
         containerClass: 'p-8 md:p-12',
         titleClass: 'text-3xl md:text-4xl font-signika font-bold mb-6',
         contentClass: 'max-w-none mb-4 text-lg'

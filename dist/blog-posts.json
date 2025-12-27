@@ -76,7 +76,7 @@
       "excerpt": "This post uses completely custom CSS styling.",
       "content": "# Custom Styled Post\n\nThis post uses the `style` object for complete control over appearance.\n\nYou can customize:\n- Article background and borders\n- Container padding\n- Title styling\n- Content area styling\n- Any custom CSS",
       "style": {
-        "articleClass": "bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900 dark:to-purple-900 rounded-2xl shadow-2xl mb-8 opacity-0 animate-fade-in",
+        "articleClass": "bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900 dark:to-purple-900 rounded-2xl shadow-2xl mb-8",
         "containerClass": "p-10 md:p-16",
         "titleClass": "text-4xl font-signika font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent",
         "contentClass": "prose dark:prose-invert max-w-none mb-4 text-lg",
