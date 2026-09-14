@@ -240,6 +240,11 @@
       `;
 
       // CommentBox uses the current page URL to keep each post's thread separate.
+      const commentsContainer = document.getElementById('comments');
+      commentsContainer.className = 'commentbox';
+
+      // Keep the container's iframe as its first child. CommentBox uses that
+      // element when it receives height updates from the embedded widget.
       const commentsScript = document.createElement('script');
       commentsScript.src = 'https://unpkg.com/commentbox.io/dist/commentBox.min.js';
       commentsScript.async = true;
@@ -248,9 +253,7 @@
           className: 'commentbox'
         });
       };
-      const commentsContainer = document.getElementById('comments');
-      commentsContainer.className = 'commentbox';
-      commentsContainer.appendChild(commentsScript);
+      document.head.appendChild(commentsScript);
     });
   </script>
   <script src="./fade_in.js"></script>
