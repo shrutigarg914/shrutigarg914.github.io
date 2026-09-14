@@ -87,6 +87,10 @@ dist/
 - Click tags to filter posts
 - Tags are clickable on individual posts too
 
+## Comments
+
+Individual post pages use [CommentBox.io](https://commentbox.io/), configured for this site in `blog-post.html`. Enable anonymous comments and manual moderation in the CommentBox dashboard. CommentBox keeps a separate thread for each post URL and does not require visitors to use GitHub.
+
 ## Images
 
 ### In Markdown
@@ -134,4 +138,3 @@ const correctPassword = 'your-secure-password-here';
 ## Example Long Post
 
 See `blog-posts/example-long-post.md` for a complete example.
-

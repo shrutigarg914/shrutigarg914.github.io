@@ -231,9 +231,26 @@
             <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 text-sm text-gray-500 dark:text-gray-400">
               Posted on <time datetime="${post.date}">${window.formatDate ? window.formatDate(post.date) : new Date(post.date).toLocaleDateString()}</time>
             </div>
+            <section class="mt-10 pt-8 border-t border-gray-200 dark:border-gray-700" aria-label="Comments">
+              <h2 class="text-2xl font-signika font-bold mb-5">Comments</h2>
+              <div id="comments"></div>
+            </section>
           </div>
         </article>
       `;
+
+      // CommentBox uses the current page URL to keep each post's thread separate.
+      const commentsScript = document.createElement('script');
+      commentsScript.src = 'https://unpkg.com/commentbox.io/dist/commentBox.min.js';
+      commentsScript.async = true;
+      commentsScript.onload = () => {
+        window.commentBox('5749424609296384-proj', {
+          className: 'commentbox'
+        });
+      };
+      const commentsContainer = document.getElementById('comments');
+      commentsContainer.className = 'commentbox';
+      commentsContainer.appendChild(commentsScript);
     });
   </script>
   <script src="./fade_in.js"></script>
@@ -241,4 +258,3 @@
 </body>
 
 </html>
-

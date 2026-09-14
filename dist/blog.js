@@ -101,6 +101,8 @@ class BlogManager {
       const { posts } = await (await fetch('./blog-posts.json')).json();
       this.posts = posts;
       this.posts.forEach(post => post.tags.forEach(tag => this.allTags.add(tag)));
+      const requestedTag = new URLSearchParams(window.location.search).get('tag');
+      if (requestedTag && this.allTags.has(requestedTag)) this.selectedTag = requestedTag;
       this.filterPosts();
     } catch (error) {
       console.error('Error loading posts:', error);

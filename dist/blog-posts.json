@@ -9,7 +9,16 @@
       "excerpt": "First Blog!",
       "content": "I was missing tumblr microblogging (sue me), so I got cursor to build me a mini tumblr to put on my website? (sue me twice!) \nAs a relatively recent new grad, a lot of my friends (you guys) are all over the place now. I'm hoping these blogs can be a little piece of the late night beanbag talks we took for granted, no matter where we are now. Maybe it will give you a new book recommendation, a little laugh or a reminder that we are all just silly little humans doing silly little human things that are, lowkey, all the same. Do be nice to me though... I am only 3 years old after all! \nComing up next: a movie review maybe?!",
       "images": []
+    },
+    {
+      "id": "2",
+      "title": "A Critical Review of Christopher Nolan’s Odyssey",
+      "date": "2026-09-13",
+      "tags": ["movie-review", "the-odyssey", "christopher-nolan", "film-criticism", "adaptation"],
+      "isPrivate": false,
+      "excerpt": "On Nolan’s retelling, 70 mm IMAX, visual storytelling, and the women of Ithaca.",
+      "contentFile": "./blog-posts/2026-09-13-odyssey-review.md",
+      "images": []
     }
   ]
 }
-
