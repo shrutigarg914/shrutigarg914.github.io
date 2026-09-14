@@ -167,13 +167,13 @@
         return;
       }
       
-      // Load blog manager
+      // Ensure the shared manager has finished loading before looking up the post.
       if (!window.blogManager) {
         const blogManager = new BlogManager();
         window.blogManager = blogManager;
-        await blogManager.loadPosts();
-        blogManager.checkSessionAuth();
       }
+      await window.blogManager.loadPosts();
+      window.blogManager.checkSessionAuth();
       
       const post = window.blogManager.getPostById(postId);
       
